@@ -11,7 +11,7 @@ use Composer\Installer\PackageEvents;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 
-class VendorTestCleanupPlugin implements PluginInterface, EventSubscriberInterface
+class ComposerPlugin implements PluginInterface, EventSubscriberInterface
 {
 
     /**
