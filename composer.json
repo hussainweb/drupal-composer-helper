@@ -6,16 +6,23 @@
     "authors": [
         {
             "name": "hussainweb",
-            "email": "hussainweb@gmail.com"
+            "email": "hussainweb@gmail.com",
+            "homepage": "http://hussainweb.me",
+            "role": "Developer"
         }
     ],
     "require": {
+        "php": ">=5.5.9",
         "composer-plugin-api": "^1.1"
     },
     "require-dev": {
-        "composer/composer": "~1.0"
+        "composer/composer": "~1.0",
+        "squizlabs/php_codesniffer": "~2.3"
     },
     "extra": {
+        "branch-alias": {
+            "dev-master": "1.x-dev"
+        },
         "sort-packages": true
     }
 }
