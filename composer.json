@@ -19,6 +19,11 @@
         "composer/composer": "~1.0",
         "squizlabs/php_codesniffer": "~2.3"
     },
+    "autoload": {
+        "psr-4": {
+            "Hussainweb\\DrupalComposerHelper\\": "src/"
+        }
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "1.x-dev"
