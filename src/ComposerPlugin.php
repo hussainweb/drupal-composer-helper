@@ -38,7 +38,7 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
         $this->io = $io;
 
         $vendor_dir = $composer->getConfig()->get('vendor-dir');
-        $this->drupalVendorCleanup = new DrupalVendorCleanup($vendor_dir);
+        $this->drupalVendorCleanup = new DrupalVendorCleanup($vendor_dir, $io);
     }
 
     /**
