@@ -1,0 +1,21 @@
+{
+    "name": "hussainweb/drupal-composer-helper",
+    "description": "Common scripts used with Drupal",
+    "type": "composer-plugin",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "hussainweb",
+            "email": "hussainweb@gmail.com"
+        }
+    ],
+    "require": {
+        "composer-plugin-api": "^1.1"
+    },
+    "require-dev": {
+        "composer/composer": "~1.0"
+    },
+    "extra": {
+        "sort-packages": true
+    }
+}
