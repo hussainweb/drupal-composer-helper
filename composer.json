@@ -2,6 +2,7 @@
     "name": "hussainweb/drupal-composer-helper",
     "description": "Common scripts used with Drupal",
     "type": "composer-plugin",
+    "keywords": ["drupal"],
     "license": "MIT",
     "authors": [
         {
