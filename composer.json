@@ -37,5 +37,11 @@
             "dev-master": "1.x-dev"
         },
         "class": "Hussainweb\\DrupalComposerHelper\\ComposerPlugin"
+    },
+    "suggest": {
+        "cweagans/composer-patches": "Allows patching from local and remote patch files.",
+        "drush/drush": "Drush is a command line shell and scripting interface for Drupal.",
+        "drupal/console": "The Drupal CLI. A tool to generate boilerplate code, interact with and debug Drupal.",
+        "drupal/core": "Why are you even using this package, if not to use Drupal?"
     }
 }

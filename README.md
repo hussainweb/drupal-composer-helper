@@ -10,7 +10,7 @@ This plugin handles common operations for Drupal setups. This is derived from th
 ## Usage
 
 ```
-composer require --dev hussainweb/drupal-composer-helper:~1.0
+composer require hussainweb/drupal-composer-helper:~1.0
 ```
 
 More details coming soon...
