@@ -3,57 +3,59 @@
 namespace Hussainweb\DrupalComposerHelper;
 
 use Composer\IO\IOInterface;
-use DrupalFinder\DrupalFinder;
 use Symfony\Component\Filesystem\Filesystem;
 use Webmozart\PathUtil\Path;
 
 class DrupalFiles
 {
 
-    public static function createRequiredFiles(IOInterface $io)
+    private $io;
+
+    private $options;
+
+    public function __construct(IOInterface $io, Options $options)
+    {
+        $this->io = $io;
+        $this->options = $options;
+    }
+
+    public function createRequiredFiles()
     {
         $fs = new Filesystem();
-        $drupalFinder = new DrupalFinder();
-        $drupalFinder->locateRoot(getcwd());
-        $drupalRoot = $drupalFinder->getDrupalRoot();
+        $composer_root = getcwd();
+        $drupal_root = $composer_root . '/' . $this->options->get('web-prefix');
 
-        $dirs = [
-            'modules',
-            'profiles',
-            'themes',
-        ];
-
-        // Required for unit testing
-        foreach ($dirs as $dir) {
-            if (!$fs->exists($drupalRoot . '/'. $dir)) {
-                $fs->mkdir($drupalRoot . '/'. $dir);
-                $fs->touch($drupalRoot . '/'. $dir . '/.gitkeep');
+        // Create the basic structure.
+        foreach (['modules', 'profiles', 'themes'] as $dir) {
+            if (!$fs->exists($drupal_root . '/'. $dir)) {
+                $fs->mkdir($drupal_root . '/'. $dir);
+                $fs->touch($drupal_root . '/'. $dir . '/.gitkeep');
             }
         }
 
         // Prepare the settings file for installation
-        if (!$fs->exists($drupalRoot . '/sites/default/settings.php')
-            && $fs->exists($drupalRoot . '/sites/default/default.settings.php')) {
-            $fs->copy($drupalRoot . '/sites/default/default.settings.php', $drupalRoot . '/sites/default/settings.php');
-            require_once $drupalRoot . '/core/includes/bootstrap.inc';
-            require_once $drupalRoot . '/core/includes/install.inc';
+        if (!$fs->exists($drupal_root . '/sites/default/settings.php')
+            && $fs->exists($drupal_root . '/sites/default/default.settings.php')) {
+            $fs->copy($drupal_root . '/sites/default/default.settings.php', $drupal_root . '/sites/default/settings.php');
+            require_once $drupal_root . '/core/includes/bootstrap.inc';
+            require_once $drupal_root . '/core/includes/install.inc';
             $settings['config_directories'] = [
                 CONFIG_SYNC_DIRECTORY => (object) [
-                    'value' => Path::makeRelative($drupalFinder->getComposerRoot() . '/config/sync', $drupalRoot),
+                    'value' => Path::makeRelative($composer_root . '/config/sync', $drupal_root),
                     'required' => true,
                 ],
             ];
-            drupal_rewrite_settings($settings, $drupalRoot . '/sites/default/settings.php');
-            $fs->chmod($drupalRoot . '/sites/default/settings.php', 0666);
-            $io->write("Create a sites/default/settings.php file with chmod 0666");
+            drupal_rewrite_settings($settings, $drupal_root . '/sites/default/settings.php');
+            $fs->chmod($drupal_root . '/sites/default/settings.php', 0666);
+            $this->io->write("Create a sites/default/settings.php file with chmod 0666");
         }
 
         // Create the files directory with chmod 0777
-        if (!$fs->exists($drupalRoot . '/sites/default/files')) {
+        if (!$fs->exists($drupal_root . '/sites/default/files')) {
             $oldmask = umask(0);
-            $fs->mkdir($drupalRoot . '/sites/default/files', 0777);
+            $fs->mkdir($drupal_root . '/sites/default/files', 0777);
             umask($oldmask);
-            $io->write("Create a sites/default/files directory with chmod 0777");
+            $this->io->write("Create a sites/default/files directory with chmod 0777");
         }
     }
 }

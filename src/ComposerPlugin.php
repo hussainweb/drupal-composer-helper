@@ -28,10 +28,8 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
     private $io;
 
     /**
-     * @var DrupalVendorCleanup
+     * @var Options
      */
-    private $drupalVendorCleanup;
-
     private $options;
 
     /**
@@ -42,9 +40,6 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
         $this->composer = $composer;
         $this->io = $io;
         $this->options = new Options($composer);
-
-        $vendor_dir = $composer->getConfig()->get('vendor-dir');
-        $this->drupalVendorCleanup = new DrupalVendorCleanup($vendor_dir, $io);
 
         // Set sane defaults for Drupal installer paths.
         $composer_installers_helper = new ComposerInstallersHelper($composer, $this->options);
@@ -77,11 +72,14 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
             return;
         }
 
-        $this->drupalVendorCleanup->vendorTestCodeCleanup($package);
+        $vendor_dir = $this->composer->getConfig()->get('vendor-dir');
+        $drupalVendorCleanup = new DrupalVendorCleanup($vendor_dir, $this->io);
+        $drupalVendorCleanup->vendorTestCodeCleanup($package);
     }
 
     public function createDrupalFiles(Event $event)
     {
-        DrupalFiles::createRequiredFiles($event->getIO());
+        $drupalFiles = new DrupalFiles($this->io, $this->options);
+        $drupalFiles->createRequiredFiles();
     }
 }
