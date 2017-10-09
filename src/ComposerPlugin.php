@@ -9,7 +9,9 @@ use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\Installer\PackageEvent;
 use Composer\Installer\PackageEvents;
 use Composer\IO\IOInterface;
+use Composer\IO\NullIO;
 use Composer\Plugin\PluginInterface;
+use Composer\Repository\ComposerRepository;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
 use DrupalComposer\DrupalScaffold\Handler as DrupalScaffoldHandler;
@@ -44,6 +46,9 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
         // Set sane defaults for Drupal installer paths.
         $composer_installers_helper = new ComposerInstallersHelper($composer, $this->options);
         $composer_installers_helper->setInstallerPaths();
+
+        // Add drupal.org packagist to repositories if not present.
+        $this->addDrupalRepository();
     }
 
     /**
@@ -81,5 +86,22 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
     {
         $drupalFiles = new DrupalFiles($this->io, $this->options);
         $drupalFiles->createRequiredFiles();
+    }
+
+    public function addDrupalRepository()
+    {
+        $repositories = $this->composer->getPackage()->getRepositories();
+        $already_present = array_reduce($repositories, function ($carry, $item) {
+            return $carry
+                || ($item['type'] == 'composer' && $item['url'] == 'https://packages.drupal.org/8');
+        }, false);
+
+        if (!$already_present) {
+            $repo = new ComposerRepository([
+                'type' => 'composer',
+                'url' => 'https://packages.drupal.org/8',
+            ], new NullIO(), $this->composer->getConfig());
+            $this->composer->getRepositoryManager()->addRepository($repo);
+        }
     }
 }
