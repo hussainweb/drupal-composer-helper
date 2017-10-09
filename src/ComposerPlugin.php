@@ -30,7 +30,9 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
     /**
      * @var DrupalVendorCleanup
      */
-    protected $drupalVendorCleanup;
+    private $drupalVendorCleanup;
+
+    private $options;
 
     /**
      * {@inheritdoc}
@@ -39,9 +41,14 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
     {
         $this->composer = $composer;
         $this->io = $io;
+        $this->options = new Options($composer);
 
         $vendor_dir = $composer->getConfig()->get('vendor-dir');
         $this->drupalVendorCleanup = new DrupalVendorCleanup($vendor_dir, $io);
+
+        // Set sane defaults for Drupal installer paths.
+        $composer_installers_helper = new ComposerInstallersHelper($composer, $this->options);
+        $composer_installers_helper->setInstallerPaths();
     }
 
     /**
