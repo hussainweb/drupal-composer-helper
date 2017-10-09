@@ -16,11 +16,12 @@ class Options
 
     public function get($key = '')
     {
-        $extra = $this->composer->getPackage()->getExtra() + [
-                'drupal-composer-helper' => [
-                    'web-prefix' => 'web',
-                ],
-            ];
+        $extra = $this->composer->getPackage()->getExtra() + ['drupal-composer-helper' => []];
+
+        $extra['drupal-composer-helper'] += [
+            'web-prefix' => 'web',
+            'additional-cleanup' => [],
+        ];
 
         return $key ? $extra['drupal-composer-helper'][$key] : $extra['drupal-composer-helper'];
     }
