@@ -12,6 +12,7 @@ use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
+use DrupalComposer\DrupalScaffold\Handler as DrupalScaffoldHandler;
 
 class ComposerPlugin implements PluginInterface, EventSubscriberInterface
 {
@@ -53,6 +54,7 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
             PackageEvents::PRE_PACKAGE_INSTALL => 'cleanupVendorFiles',
             ScriptEvents::POST_INSTALL_CMD => 'createDrupalFiles',
             ScriptEvents::POST_UPDATE_CMD => 'createDrupalFiles',
+            DrupalScaffoldHandler::POST_DRUPAL_SCAFFOLD_CMD => 'createDrupalFiles',
         ];
     }
 
