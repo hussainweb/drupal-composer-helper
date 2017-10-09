@@ -27,26 +27,27 @@ class DrupalFiles
 
         // Create the basic structure.
         foreach (['modules', 'profiles', 'themes'] as $dir) {
-            if (!$fs->exists($drupal_root . '/'. $dir)) {
-                $fs->mkdir($drupal_root . '/'. $dir);
-                $fs->touch($drupal_root . '/'. $dir . '/.gitkeep');
+            if (!$fs->exists($drupal_root . '/' . $dir)) {
+                $fs->mkdir($drupal_root . '/' . $dir);
+                $fs->touch($drupal_root . '/' . $dir . '/.gitkeep');
             }
         }
 
         // Prepare the settings file for installation
-        if (!$fs->exists($drupal_root . '/sites/default/settings.php')
-            && $fs->exists($drupal_root . '/sites/default/default.settings.php')) {
-            $fs->copy($drupal_root . '/sites/default/default.settings.php', $drupal_root . '/sites/default/settings.php');
+        $settings_filename = $drupal_root . '/sites/default/settings.php';
+        $default_settings_filename = $drupal_root . '/sites/default/default.settings.php';
+        if (!$fs->exists($settings_filename) && $fs->exists($default_settings_filename)) {
+            $fs->copy($default_settings_filename, $settings_filename);
             require_once $drupal_root . '/core/includes/bootstrap.inc';
             require_once $drupal_root . '/core/includes/install.inc';
             $settings['config_directories'] = [
-                CONFIG_SYNC_DIRECTORY => (object) [
+                CONFIG_SYNC_DIRECTORY => (object)[
                     'value' => Path::makeRelative($composer_root . '/config/sync', $drupal_root),
                     'required' => true,
                 ],
             ];
-            drupal_rewrite_settings($settings, $drupal_root . '/sites/default/settings.php');
-            $fs->chmod($drupal_root . '/sites/default/settings.php', 0666);
+            drupal_rewrite_settings($settings, $settings_filename);
+            $fs->chmod($settings_filename, 0666);
             $this->io->write("Create a sites/default/settings.php file with chmod 0666");
         }
 
