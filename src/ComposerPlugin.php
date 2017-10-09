@@ -10,6 +10,8 @@ use Composer\Installer\PackageEvent;
 use Composer\Installer\PackageEvents;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
+use Composer\Script\Event;
+use Composer\Script\ScriptEvents;
 
 class ComposerPlugin implements PluginInterface, EventSubscriberInterface
 {
@@ -49,6 +51,8 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
         return [
             PackageEvents::POST_PACKAGE_INSTALL => 'cleanupVendorFiles',
             PackageEvents::PRE_PACKAGE_INSTALL => 'cleanupVendorFiles',
+            ScriptEvents::POST_INSTALL_CMD => 'createDrupalFiles',
+            ScriptEvents::POST_UPDATE_CMD => 'createDrupalFiles',
         ];
     }
 
@@ -65,5 +69,10 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
         }
 
         $this->drupalVendorCleanup->vendorTestCodeCleanup($package);
+    }
+
+    public function createDrupalFiles(Event $event)
+    {
+        DrupalFiles::createRequiredFiles($event->getIO());
     }
 }
