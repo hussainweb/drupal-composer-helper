@@ -136,6 +136,43 @@ class DrupalVendorCleanup
     }
 
     /**
+     * Remove other files that could be possibly problematic.
+     *
+     * @param \Composer\Script\Event $event
+     *   A Event object.
+     */
+    public function additionalCleanup($additionalFiles)
+    {
+        foreach ($additionalFiles as $path) {
+            $dir_to_remove = $path;
+            $print_message = $this->io->isVeryVerbose();
+            if (is_dir($dir_to_remove)) {
+                if (static::deleteRecursive($dir_to_remove)) {
+                    $message = sprintf("      <info>Removing directory '%s'</info>", $path);
+                } else {
+                    // Always display a message if this fails as it means something has
+                    // gone wrong. Therefore the message has to include the package name
+                    // as the first informational message might not exist.
+                    $print_message = true;
+                    $message = sprintf("      <error>Failure removing directory '%s'</error>.", $path);
+                }
+            } else {
+                // If the package has changed or the --prefer-dist version does not
+                // include the directory this is not an error.
+                $message = sprintf("      Directory '%s' does not exist", $path);
+            }
+            if ($print_message) {
+                $this->io->write($message);
+            }
+        }
+
+        if ($this->io->isVeryVerbose()) {
+            // Add a new line to separate this output from the next package.
+            $this->io->write("");
+        }
+    }
+
+    /**
      * Find the array key for a given package name with a case-insensitive search.
      *
      * @param string $package_name

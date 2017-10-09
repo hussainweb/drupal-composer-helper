@@ -54,8 +54,14 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
         return [
             PackageEvents::POST_PACKAGE_INSTALL => 'cleanupVendorFiles',
             PackageEvents::PRE_PACKAGE_INSTALL => 'cleanupVendorFiles',
-            ScriptEvents::POST_INSTALL_CMD => 'createDrupalFiles',
-            ScriptEvents::POST_UPDATE_CMD => 'createDrupalFiles',
+            ScriptEvents::POST_INSTALL_CMD => [
+                ['createDrupalFiles', 1],
+                ['cleanupAdditionalFiles', 1],
+            ],
+            ScriptEvents::POST_UPDATE_CMD => [
+                ['createDrupalFiles', 1],
+                ['cleanupAdditionalFiles', 1],
+            ],
             DrupalScaffoldHandler::POST_DRUPAL_SCAFFOLD_CMD => 'createDrupalFiles',
         ];
     }
@@ -75,6 +81,16 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
         $vendor_dir = $this->composer->getConfig()->get('vendor-dir');
         $drupalVendorCleanup = new DrupalVendorCleanup($vendor_dir, $this->io);
         $drupalVendorCleanup->vendorTestCodeCleanup($package);
+    }
+
+    public function cleanupAdditionalFiles(Event $event)
+    {
+        $additional_files = $this->options->get('additional-cleanup');
+        if ($additional_files) {
+            $vendor_dir = $this->composer->getConfig()->get('vendor-dir');
+            $drupalVendorCleanup = new DrupalVendorCleanup($vendor_dir, $this->io);
+            $drupalVendorCleanup->additionalCleanup($additional_files);
+        }
     }
 
     public function createDrupalFiles(Event $event)
