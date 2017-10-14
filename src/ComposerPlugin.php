@@ -51,16 +51,17 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
+        // Set the priorities so that cleanup actions are called at the end.
         return [
-            PackageEvents::POST_PACKAGE_INSTALL => 'cleanupVendorFiles',
-            PackageEvents::PRE_PACKAGE_INSTALL => 'cleanupVendorFiles',
+            PackageEvents::POST_PACKAGE_INSTALL => ['cleanupVendorFiles', -100],
+            PackageEvents::PRE_PACKAGE_INSTALL => ['cleanupVendorFiles', -100],
             ScriptEvents::POST_INSTALL_CMD => [
-                ['createDrupalFiles', 1],
-                ['cleanupAdditionalFiles', 1],
+                ['createDrupalFiles', -1],
+                ['cleanupAdditionalFiles', -100],
             ],
             ScriptEvents::POST_UPDATE_CMD => [
-                ['createDrupalFiles', 1],
-                ['cleanupAdditionalFiles', 1],
+                ['createDrupalFiles', -1],
+                ['cleanupAdditionalFiles', -100],
             ],
             DrupalScaffoldHandler::POST_DRUPAL_SCAFFOLD_CMD => 'createDrupalFiles',
         ];
