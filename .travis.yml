@@ -15,5 +15,5 @@ before_script:
   - travis_retry composer install --no-interaction --prefer-dist --dev
 
 script:
-  - vendor/bin/phpcs --standard=psr2 src/
+  - composer test
 #  - vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover

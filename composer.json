@@ -30,6 +30,7 @@
         }
     },
     "config": {
+        "optimize-autoloader": true,
         "sort-packages": true
     },
     "extra": {
@@ -43,5 +44,11 @@
         "drush/drush": "Drush is a command line shell and scripting interface for Drupal.",
         "drupal/console": "The Drupal CLI. A tool to generate boilerplate code, interact with and debug Drupal.",
         "drupal/core": "Why are you even using this package, if not to use Drupal?"
+    },
+    "scripts": {
+        "test": [
+            "composer validate --no-interaction",
+            "phpcs --standard=psr2 src/"
+        ]
     }
 }
