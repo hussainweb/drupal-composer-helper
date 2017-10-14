@@ -21,6 +21,7 @@ class Options
         $extra['drupal-composer-helper'] += [
             'web-prefix' => 'web',
             'additional-cleanup' => [],
+            'set-d7-paths' => false,
         ];
 
         return $key ? $extra['drupal-composer-helper'][$key] : $extra['drupal-composer-helper'];

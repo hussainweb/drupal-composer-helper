@@ -17,14 +17,26 @@ class ComposerInstallersHelper
      * @var array
      */
     private $installerPaths = [
-        'core' => '{$prefix}core/',
-        'module' => '{$prefix}modules/contrib/{$name}/',
-        'theme' => '{$prefix}themes/contrib/{$name}/',
-        'library' => '{$prefix}libraries/{$name}/',
-        'profile' => '{$prefix}profiles/contrib/{$name}/',
-        'drush' => 'drush/{$name}/',
-        'custom-theme' => '{$prefix}themes/custom/{$name}/',
-        'custom-module' => '{$prefix}modules/custom/{$name}/',
+        'd7' => [
+            'core' => '{$prefix}',
+            'module' => '{$prefix}sites/all/modules/contrib/{$name}/',
+            'theme' => '{$prefix}sites/all/themes/contrib/{$name}/',
+            'library' => '{$prefix}sites/all/libraries/{$name}/',
+            'profile' => '{$prefix}sites/all/profiles/contrib/{$name}/',
+            'drush' => 'drush/{$name}/',
+            'custom-theme' => '{$prefix}sites/all/themes/custom/{$name}/',
+            'custom-module' => '{$prefix}sites/all/modules/custom/{$name}/',
+        ],
+        'd8' => [
+            'core' => '{$prefix}core/',
+            'module' => '{$prefix}modules/contrib/{$name}/',
+            'theme' => '{$prefix}themes/contrib/{$name}/',
+            'library' => '{$prefix}libraries/{$name}/',
+            'profile' => '{$prefix}profiles/contrib/{$name}/',
+            'drush' => 'drush/{$name}/',
+            'custom-theme' => '{$prefix}themes/custom/{$name}/',
+            'custom-module' => '{$prefix}modules/custom/{$name}/',
+        ],
     ];
 
     public function __construct(Composer $composer, Options $options)
@@ -40,11 +52,14 @@ class ComposerInstallersHelper
         // Get the configured prefix.
         $prefix = $this->options->get('web-prefix');
 
+        // Check if we have to set Drupal 7 paths.
+        $d7_paths = $this->options->get('set-d7-paths');
+
         // Get the existing Drupal specific installer paths.
         $installer_paths = $this->getDrupalInstallerPaths();
 
         // Set the installer paths we need for Drupal.
-        foreach ($this->installerPaths as $type => $path) {
+        foreach ($this->installerPaths[$d7_paths ? 'd7' : 'd8'] as $type => $path) {
             $type_key = 'type:drupal-' . $type;
             if (empty($installer_paths[$type_key])) {
                 $path = str_replace('{$prefix}', $prefix . '/', $path);
