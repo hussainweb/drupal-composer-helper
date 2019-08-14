@@ -40,8 +40,8 @@ The plugin provides following configuration options (and defaults) in `composer.
 {
     ...
     "extra": {
+        "drupal-web-dir": "web",
         "drupal-composer-helper": {
-            "web-prefix": "web",
             "additional-cleanup": [],
             "set-d7-paths": false
         },
@@ -50,7 +50,7 @@ The plugin provides following configuration options (and defaults) in `composer.
     ...
 ```
 
-### web-prefix
+### drupal-web-dir
 
 Default: 'web'
 
@@ -69,6 +69,12 @@ For a Drupal 8 setup, the defaults set by this plugin are as follows:
 ```
 
 The above are just defaults and can be overridden by the usual `installer-paths` property in `extra` section in your composer.json file.
+
+### web-prefix _(deprecated)_
+
+Default: 'web'
+
+This setting is deprecated in favour of the [`drupal-web-dir`](#drupal-web-dir) setting at the top level of `extra` section. The plugin still falls back to this setting if `drupal-web-dir` is not set but for compatibility with the rest of the Drupal ecosystem, it is a good idea to use the new setting.
 
 See also: `set-d7-paths`.
 
