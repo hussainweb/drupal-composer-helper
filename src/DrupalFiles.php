@@ -23,7 +23,7 @@ class DrupalFiles
     {
         $fs = new Filesystem();
         $composerRoot = getcwd();
-        $drupalRoot = $composerRoot . '/' . $this->options->get('web-prefix');
+        $drupalRoot = $composerRoot . '/' . $this->options->getWebPrefix();
 
         // Create the basic structure.
         foreach (['modules', 'profiles', 'themes'] as $dir) {

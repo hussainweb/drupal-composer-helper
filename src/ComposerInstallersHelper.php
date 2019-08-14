@@ -50,7 +50,7 @@ class ComposerInstallersHelper
         $extra = $this->composer->getPackage()->getExtra() + ['installer-paths' => []];
 
         // Get the configured prefix.
-        $prefix = $this->options->get('web-prefix');
+        $prefix = $this->options->getWebPrefix();
 
         // Check if we have to set Drupal 7 paths.
         $d7_paths = $this->options->get('set-d7-paths');
