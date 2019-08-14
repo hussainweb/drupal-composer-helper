@@ -22,39 +22,39 @@ class DrupalFiles
     public function createRequiredFiles()
     {
         $fs = new Filesystem();
-        $composer_root = getcwd();
-        $drupal_root = $composer_root . '/' . $this->options->get('web-prefix');
+        $composerRoot = getcwd();
+        $drupalRoot = $composerRoot . '/' . $this->options->get('web-prefix');
 
         // Create the basic structure.
         foreach (['modules', 'profiles', 'themes'] as $dir) {
-            if (!$fs->exists($drupal_root . '/' . $dir)) {
-                $fs->mkdir($drupal_root . '/' . $dir);
-                $fs->touch($drupal_root . '/' . $dir . '/.gitkeep');
+            if (!$fs->exists($drupalRoot . '/' . $dir)) {
+                $fs->mkdir($drupalRoot . '/' . $dir);
+                $fs->touch($drupalRoot . '/' . $dir . '/.gitkeep');
             }
         }
 
         // Prepare the settings file for installation
-        $settings_filename = $drupal_root . '/sites/default/settings.php';
-        $default_settings_filename = $drupal_root . '/sites/default/default.settings.php';
-        if (!$fs->exists($settings_filename) && $fs->exists($default_settings_filename)) {
-            $fs->copy($default_settings_filename, $settings_filename);
-            require_once $drupal_root . '/core/includes/bootstrap.inc';
-            require_once $drupal_root . '/core/includes/install.inc';
+        $settingsFilename = $drupalRoot . '/sites/default/settings.php';
+        $defaultSettingsFilename = $drupalRoot . '/sites/default/default.settings.php';
+        if (!$fs->exists($settingsFilename) && $fs->exists($defaultSettingsFilename)) {
+            $fs->copy($defaultSettingsFilename, $settingsFilename);
+            require_once $drupalRoot . '/core/includes/bootstrap.inc';
+            require_once $drupalRoot . '/core/includes/install.inc';
             $settings['config_directories'] = [
                 CONFIG_SYNC_DIRECTORY => (object) [
-                    'value' => Path::makeRelative($composer_root . '/config/sync', $drupal_root),
+                    'value' => Path::makeRelative($composerRoot . '/config/sync', $drupalRoot),
                     'required' => true,
                 ],
             ];
-            drupal_rewrite_settings($settings, $settings_filename);
-            $fs->chmod($settings_filename, 0666);
+            drupal_rewrite_settings($settings, $settingsFilename);
+            $fs->chmod($settingsFilename, 0666);
             $this->io->write("Create a sites/default/settings.php file with chmod 0666");
         }
 
         // Create the files directory with chmod 0777
-        if (!$fs->exists($drupal_root . '/sites/default/files')) {
+        if (!$fs->exists($drupalRoot . '/sites/default/files')) {
             $oldmask = umask(0);
-            $fs->mkdir($drupal_root . '/sites/default/files', 0777);
+            $fs->mkdir($drupalRoot . '/sites/default/files', 0777);
             umask($oldmask);
             $this->io->write("Create a sites/default/files directory with chmod 0777");
         }
