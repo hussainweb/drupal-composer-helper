@@ -37,13 +37,16 @@ class DrupalFiles
         $settings_filename = $drupal_root . '/sites/default/settings.php';
         $default_settings_filename = $drupal_root . '/sites/default/default.settings.php';
         if (!$fs->exists($settings_filename) && $fs->exists($default_settings_filename)) {
-            $config_path = Path::makeRelative($composer_root . '/config/sync', $drupal_root);
-            $string = '$config_directories[\'sync\'] = \'' . $config_path . '\';' . PHP_EOL;
-
-            $orig_settings = file_get_contents($default_settings_filename);
-            $orig_settings .= $string;
-            $fs->dumpFile($settings_filename, $orig_settings);
-
+            $fs->copy($default_settings_filename, $settings_filename);
+            require_once $drupal_root . '/core/includes/bootstrap.inc';
+            require_once $drupal_root . '/core/includes/install.inc';
+            $settings['config_directories'] = [
+                CONFIG_SYNC_DIRECTORY => (object) [
+                    'value' => Path::makeRelative($composer_root . '/config/sync', $drupal_root),
+                    'required' => true,
+                ],
+            ];
+            drupal_rewrite_settings($settings, $settings_filename);
             $fs->chmod($settings_filename, 0666);
             $this->io->write("Create a sites/default/settings.php file with chmod 0666");
         }
