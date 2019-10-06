@@ -6,7 +6,7 @@ use Composer\Composer;
 
 class Options
 {
-    public const DEFAULT_WEB_PREFIX = 'web';
+    const DEFAULT_WEB_PREFIX = 'web';
 
     private $composer;
 
