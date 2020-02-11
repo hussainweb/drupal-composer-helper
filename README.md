@@ -18,8 +18,12 @@ If you are starting off a new Drupal 7 or 8 website, it is easier to start with 
 For existing composer setups, just run this command:
 
 ```
-composer require hussainweb/drupal-composer-helper:~1.0
+composer require hussainweb/drupal-composer-helper:^1.0
 ```
+
+### Usage with the new composer template
+
+_TODO_
 
 ### Usage in drupal-composer template
 
