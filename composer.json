@@ -44,7 +44,8 @@
         "drupal/console": "The Drupal CLI. A tool to generate boilerplate code, interact with and debug Drupal.",
         "drupal/core": "Why are you even using this package, if not to use Drupal?",
         "drupal/core-composer-scaffold": "Scaffold individual files from drupal/core into their desired location.",
-        "drupal/core-vendor-hardening": "Removes extraneous directories from the Composer-managed vendor directory."
+        "drupal/core-vendor-hardening": "Removes extraneous directories from the Composer-managed vendor directory.",
+        "oomphinc/composer-installers-extender": "Extend the composer/installers plugin to accept any arbitrary package type."
     },
     "scripts": {
         "test": [
