@@ -40,15 +40,13 @@ class DrupalFiles
             $fs->copy($defaultSettingsFilename, $settingsFilename);
             require_once $drupalRoot . '/core/includes/bootstrap.inc';
             require_once $drupalRoot . '/core/includes/install.inc';
-            $settings['config_directories'] = [
-                CONFIG_SYNC_DIRECTORY => (object) [
-                    'value' => Path::makeRelative($composerRoot . '/config/sync', $drupalRoot),
-                    'required' => true,
-                ],
+            $settings['settings']['config_sync_directory'] = (object)[
+              'value' => Path::makeRelative($composerRoot . '/config/sync', $drupalRoot),
+              'required' => true,
             ];
             drupal_rewrite_settings($settings, $settingsFilename);
             $fs->chmod($settingsFilename, 0666);
-            $this->io->write("Create a sites/default/settings.php file with chmod 0666");
+            $this->io->write("Created a sites/default/settings.php file with chmod 0666");
         }
 
         // Create the files directory with chmod 0777
@@ -56,7 +54,7 @@ class DrupalFiles
             $oldmask = umask(0);
             $fs->mkdir($drupalRoot . '/sites/default/files', 0777);
             umask($oldmask);
-            $this->io->write("Create a sites/default/files directory with chmod 0777");
+            $this->io->write("Created a sites/default/files directory with chmod 0777");
         }
     }
 }
