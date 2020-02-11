@@ -16,7 +16,6 @@
         "php": ">=5.5.9",
         "composer-plugin-api": "^1.1",
         "composer/installers": "^1.2",
-        "drupal-composer/drupal-scaffold": "^2.2",
         "symfony/filesystem": "^3.3 || ^4.0",
         "webmozart/path-util": "^2.3"
     },
@@ -43,7 +42,9 @@
         "cweagans/composer-patches": "Allows patching from local and remote patch files.",
         "drush/drush": "Drush is a command line shell and scripting interface for Drupal.",
         "drupal/console": "The Drupal CLI. A tool to generate boilerplate code, interact with and debug Drupal.",
-        "drupal/core": "Why are you even using this package, if not to use Drupal?"
+        "drupal/core": "Why are you even using this package, if not to use Drupal?",
+        "drupal/core-composer-scaffold": "Scaffold individual files from drupal/core into their desired location.",
+        "drupal/core-vendor-hardening": "Removes extraneous directories from the Composer-managed vendor directory."
     },
     "scripts": {
         "test": [

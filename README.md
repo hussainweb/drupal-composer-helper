@@ -45,7 +45,6 @@ The plugin provides following configuration options (and defaults) in `composer.
     ...
     "extra": {
         "drupal-composer-helper": {
-            "additional-cleanup": [],
             "set-d7-paths": false
         },
         ...
@@ -105,29 +104,11 @@ This setting is deprecated in favour of [core's Drupal scaffold plugin settings]
 
 See also: `set-d7-paths`.
 
-### additional-cleanup
+### additional-cleanup _(removed)_
 
 Default: Empty array
 
-This specifies a list of files or directories that should be deleted once composer install or update is complete. For example, you may use this to delete test directories from your production site.
-
-Example:
-```
-{
-    ...
-    "extra": {
-        "drupal-composer-helper": {
-            "additional-cleanup": [
-                "web/core/modules/system/tests",
-                "web/core/tests",
-                "web/modules/acquia_connector/src/Tests"
-            ],
-            "set-d7-paths": false
-        },
-        ...
-    },
-    ...
-```
+This has been replaced by the functionality in [`drupal/core-vendor-hardening`](https://packagist.org/packages/drupal/core-vendor-hardening). You still need to explicitly require that plugin in your composer.json. The plugin only suggests adding it.
 
 ### set-d7-paths
 
