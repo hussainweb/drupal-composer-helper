@@ -33,7 +33,7 @@ class ComposerInstallersHelper
             'theme' => '{$prefix}themes/contrib/{$name}/',
             'library' => '{$prefix}libraries/{$name}/',
             'profile' => '{$prefix}profiles/contrib/{$name}/',
-            'drush' => 'drush/{$name}/',
+            'drush' => 'drush/Commands/contrib/{$name}/',
             'custom-theme' => '{$prefix}themes/custom/{$name}/',
             'custom-module' => '{$prefix}modules/custom/{$name}/',
         ],
