@@ -40,7 +40,6 @@ The plugin provides following configuration options (and defaults) in `composer.
 {
     ...
     "extra": {
-        "drupal-web-dir": "web",
         "drupal-composer-helper": {
             "additional-cleanup": [],
             "set-d7-paths": false
@@ -50,11 +49,28 @@ The plugin provides following configuration options (and defaults) in `composer.
     ...
 ```
 
-### drupal-web-dir
+### Drupal Path
 
-Default: 'web'
+This plugin finds the path to Drupal installation using the new setting provided by the new [core Drupal scaffold plugin](https://packagist.org/packages/drupal/core-composer-scaffold). It uses this as a prefix to set all the Drupal relevant installer paths so that Drupal core, modules, and themes may be installed in the correct location. The plugin also runs scaffolding within this directory and creates other required files for Drupal.
 
-This sets the document root directory for the Drupal installation. The plugin uses this as a prefix to set all the Drupal relevant installer paths so that Drupal core, modules, and themes may be installed in the correct location. The plugin also runs scaffolding within this directory and creates other required files for Drupal.
+Example:
+```
+{
+    ...
+    "extra": {
+        "drupal-scaffold": {
+            "locations: {
+                "web-root": "web/"
+            }
+        },
+        "drupal-composer-helper": {
+            "additional-cleanup": [],
+            "set-d7-paths": false
+        },
+        ...
+    },
+    ...
+```
 
 For a Drupal 8 setup, the defaults set by this plugin are as follows:
 ```
@@ -70,11 +86,18 @@ For a Drupal 8 setup, the defaults set by this plugin are as follows:
 
 The above are just defaults and can be overridden by the usual `installer-paths` property in `extra` section in your composer.json file.
 
+
+### drupal-web-dir _(deprecated)_
+
+Default: 'web'
+
+This setting is deprecated in favour of [core's Drupal scaffold plugin settings](#drupal-path) setting. The plugin still falls back to this setting if that is not set but for compatibility with the rest of the Drupal ecosystem, it is a good idea to use the new setting.
+
 ### web-prefix _(deprecated)_
 
 Default: 'web'
 
-This setting is deprecated in favour of the [`drupal-web-dir`](#drupal-web-dir) setting at the top level of `extra` section. The plugin still falls back to this setting if `drupal-web-dir` is not set but for compatibility with the rest of the Drupal ecosystem, it is a good idea to use the new setting.
+This setting is deprecated in favour of [core's Drupal scaffold plugin settings](#drupal-path) setting. The plugin still falls back to this setting if that is not set but for compatibility with the rest of the Drupal ecosystem, it is a good idea to use the new setting.
 
 See also: `set-d7-paths`.
 
@@ -90,7 +113,6 @@ Example:
     ...
     "extra": {
         "drupal-composer-helper": {
-            "web-prefix": "web",
             "additional-cleanup": [
                 "web/core/modules/system/tests",
                 "web/core/tests",

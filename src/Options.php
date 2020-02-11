@@ -31,6 +31,9 @@ class Options
     public function getWebPrefix()
     {
         $extra = $this->composer->getPackage()->getExtra();
+        if (!empty($extra['drupal-scaffold']['locations']['web-root'])) {
+          return rtrim($extra['drupal-scaffold']['locations']['web-root'], '/');
+        }
         if (!empty($extra['drupal-web-prefix'])) {
             return $extra['drupal-web-prefix'];
         }
